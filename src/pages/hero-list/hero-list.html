@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-spinner *ngIf="!heroes"></ion-spinner>
+    <ion-title *ngIf="heroes">Heroes</ion-title>
+    <ion-buttons *ngIf="heroes" end>
+      <button ion-button icon-only (click)="addHero()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <button ion-item *ngFor="let hero of heroes" (click)="itemTapped($event, hero._id)">
+      {{ hero.name }}
+      <div class="item-note" item-right>
+        {{ hero.alterEgo }}
+      </div>
+    </button>
+    
+  </ion-list>
+</ion-content>
