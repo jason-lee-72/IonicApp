@@ -26,14 +26,19 @@ export class HeroListPage implements OnInit {
   itemTapped(event, heroId: number) {
     this.navCtrl.push(HeroFormPage, {
       heroId: heroId,
-      callback: this.updateHeroInList.bind(this)
+      updateCallback: this.updateHeroInList.bind(this),
+      deleteCallback: this.removeHeroFromList.bind(this)
     });
   }
   
   addHero() {
     this.navCtrl.push(HeroFormPage, {
-      callback: this.addHeroToList.bind(this)
+      addCallback: this.addHeroToList.bind(this)
     });
+  }
+
+  removeHeroFromList(deletedHero: Hero) {
+    this.heroes.splice(this.heroes.findIndex(hero => hero._id == deletedHero._id), 1);
   }
 
   updateHeroInList(updatedHero: Hero) {

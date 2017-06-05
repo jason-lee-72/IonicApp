@@ -9,31 +9,37 @@
   <ion-navbar>
     <ion-spinner *ngIf="!hero"></ion-spinner>
     <ion-title>{{ hero && (hero.name || 'New Hero') }}</ion-title>
+    <ion-buttons *ngIf="hero && hero._id" end>
+      <button ion-button icon-only (click)="deleteHero()">
+        <ion-icon name="trash"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 
 <ion-content padding>
-  <ion-list>
-    <form (ngSubmit)="submitForm()" #heroForm="ngForm" *ngIf="hero">
-      <ion-item>
+  <form (ngSubmit)="submitForm()" #heroForm="ngForm" *ngIf="hero">
+    <ion-list>
+      <ion-item no-lines>
         <ion-label floating>Name</ion-label>
         <ion-input type="text" name="name" [(ngModel)]="hero.name" required></ion-input>
       </ion-item>
 
-      <ion-item>
+      <ion-item no-lines>
         <ion-label floating>Alter Ego</ion-label>
         <ion-input type="text" name="alterEgo" [(ngModel)]="hero.alterEgo"></ion-input>
       </ion-item>
 
-      <ion-item>
+      <ion-item no-lines>
         <ion-label floating>Super Power</ion-label>
         <ion-select name="power" [(ngModel)]="hero.power">
           <ion-option *ngFor="let power of powers" value="{{power}}">{{ power }}</ion-option>
         </ion-select>
       </ion-item>
-
-      <button ion-button type="submit" [disabled]="!heroForm.valid">Save Hero</button>
-    </form>
-  </ion-list>
+    </ion-list>
+    <ion-buttons end>
+      <button ion-button type="submit" [disabled]="!heroForm.valid || !heroForm.dirty">OK</button>
+    </ion-buttons>
+  </form>
 </ion-content>
