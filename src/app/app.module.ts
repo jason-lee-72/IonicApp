@@ -3,6 +3,7 @@ import { HttpModule } from '@angular/http';
 
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+
 import { MyApp } from './app.component';
 
 import { HeroService } from './services/hero.service';
@@ -15,6 +16,7 @@ import { HeroFormPage } from '../pages/hero-form/hero-form';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { GoogleMaps } from '@ionic-native/google-maps';
 
 @NgModule({
   declarations: [
@@ -41,9 +43,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   ],
   providers: [
     HeroService,
-
     StatusBar,
     SplashScreen,
+    GoogleMaps,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
   ]
 })
