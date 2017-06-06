@@ -11,8 +11,8 @@ import {
   GoogleMapsEvent,
   LatLng,
   CameraPosition,
-  MarkerOptions,
-  Marker
+  // MarkerOptions,
+  // Marker
 } from '@ionic-native/google-maps';
 /**
  * Generated class for the HeroFormPage page.
@@ -99,10 +99,12 @@ export class HeroFormPage implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+     console.log('ngAfterViewInit HeroFormPage');
     this.loadMap();
   }
 
   loadMap() {
+    console.log('loadMap HeroFormPage');
     // make sure to create following structure in your view.html file
     // and add a height (for example 100%) to it, else the map won't be visible
     // <ion-content>
