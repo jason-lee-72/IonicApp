@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, Platform } from 'ionic-angular';
 
 import { Hero, POWERS } from '../../app/models/hero';
 import { HeroService } from '../../app/services/hero.service';
@@ -37,7 +37,12 @@ export class HeroFormPage implements OnInit, AfterViewInit {
     public alertCtrl: AlertController,
     public navParams: NavParams,
     public heroService: HeroService,
-    private googleMaps: GoogleMaps) {
+    private googleMaps: GoogleMaps,
+    public platform: Platform) {
+
+    platform.ready().then(() => {
+          this.loadMap();
+    });
   }
 
   ngOnInit() {
@@ -100,7 +105,7 @@ export class HeroFormPage implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
      console.log('ngAfterViewInit HeroFormPage');
-    this.loadMap();
+    // this.loadMap();
   }
 
   loadMap() {
