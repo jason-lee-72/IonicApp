@@ -13,7 +13,7 @@ import { HeroService } from '../../app/services/hero.service';
 })
 export class HeroListPage implements OnInit {
   heroes: Array<Hero>;
-
+  
   constructor(public navCtrl: NavController, public navParams: NavParams, private heroService: HeroService) {
   }
 

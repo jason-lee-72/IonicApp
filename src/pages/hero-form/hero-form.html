@@ -42,6 +42,5 @@
       <button ion-button type="submit" [disabled]="!heroForm.valid || !heroForm.dirty">OK</button>
     </ion-buttons>
   </form>
-
-  <div #map id="map"></div>
+  <button ion-button [navPush]="mapPage">Go Maps</button>
 </ion-content>
