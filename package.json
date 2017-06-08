@@ -66,6 +66,7 @@
                 "GEOLOCATION_USAGE_DESCRIPTION": " "
             },
             "cordova-plugin-googlemaps": {
+                "API_KEY_FOR_ANDROID": "AIzaSyBFJCVQ6LjNW5L_Cg4uv2P1CAkytacsMXc",
                 "API_KEY_FOR_IOS": "AIzaSyBFJCVQ6LjNW5L_Cg4uv2P1CAkytacsMXc",
                 "NSLOCATIONWHENINUSEUSAGEDESCRIPTION": "Show your location on the map",
                 "NSLOCATIONALWAYSUSAGEDESCRIPTION": "Trace your location on the map"

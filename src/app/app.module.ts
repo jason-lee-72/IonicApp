@@ -14,6 +14,7 @@ import { ListPage } from '../pages/list/list';
 import { HeroListPage } from '../pages/hero-list/hero-list';
 import { HeroFormPage } from '../pages/hero-form/hero-form';
 import { MapPage } from '../pages/map/map';
+import { GoogleMapComponent } from '../components/google-map/google-map';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -27,7 +28,8 @@ import { GoogleMaps } from '@ionic-native/google-maps';
     ListPage,
     HeroListPage,
     HeroFormPage,
-    MapPage
+    MapPage,
+    GoogleMapComponent
   ],
   imports: [
     HttpModule,
