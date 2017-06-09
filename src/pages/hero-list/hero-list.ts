@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ItemSliding, AlertController } from 'ionic-angular';
 
 import { HeroFormPage } from '../hero-form/hero-form';
 
@@ -14,7 +14,7 @@ import { HeroService } from '../../app/services/hero.service';
 export class HeroListPage implements OnInit {
   heroes: Array<Hero>;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private heroService: HeroService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private heroService: HeroService, private alertCtrl: AlertController) {
   }
 
   ngOnInit() {
@@ -23,12 +23,12 @@ export class HeroListPage implements OnInit {
     })
   }
 
-  itemTapped(event, heroId: number) {
-    this.navCtrl.push(HeroFormPage, {
-      heroId: heroId,
-      updateCallback: this.updateHeroInList.bind(this),
-      deleteCallback: this.removeHeroFromList.bind(this)
-    });
+  itemTapped(event, slidingItem: ItemSliding, heroId: number) {
+    if (slidingItem.getOpenAmount() == 0)
+      this.navCtrl.push(HeroFormPage, {
+        heroId: heroId,
+        updateCallback: this.updateHeroInList.bind(this)
+      }); 
   }
 
   addHero() {
@@ -37,8 +37,28 @@ export class HeroListPage implements OnInit {
     });
   }
 
-  removeHeroFromList(deletedHero: Hero) {
-    this.heroes.splice(this.heroes.findIndex(hero => hero._id == deletedHero._id), 1);
+  deleteHero(heroToDelete: Hero, slidingItem: ItemSliding) {
+    const confirmDelete = this.alertCtrl.create({
+      title: 'Delete hero?',
+      buttons: [
+        {
+          text: "OK",
+          handler: () => {
+            this.heroService.delete(heroToDelete._id).then(() => {
+              this.heroes.splice(this.heroes.findIndex(hero => hero._id == heroToDelete._id), 1);
+            });
+          }
+        },
+        {
+          text: "Cancel",
+          handler: () => {
+            slidingItem.close();
+          }
+        }
+      ]
+    });
+
+    confirmDelete.present();
   }
 
   updateHeroInList(updatedHero: Hero) {
@@ -48,4 +68,9 @@ export class HeroListPage implements OnInit {
   addHeroToList(newHero: Hero) {
     this.heroes.push(newHero);
   }
+
+  slidingItemDrag(slidingItem: ItemSliding) {
+    
+  }
 }
+1

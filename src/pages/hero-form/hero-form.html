@@ -9,7 +9,7 @@
   <ion-navbar>
     <ion-spinner *ngIf="!hero"></ion-spinner>
     <ion-title>{{ hero && (hero.name || 'New Hero') }}</ion-title>
-    <ion-buttons *ngIf="hero && hero._id" end>
+    <ion-buttons end>  
       <button *ngIf="heroForm" ion-button [disabled]="!heroForm.form.valid || !heroForm.form.dirty" (click)="submitForm()">Save</button>
     </ion-buttons>
   </ion-navbar>
@@ -18,18 +18,19 @@
   
   <form #heroForm="ngForm">
     <ion-list *ngIf="hero">
-      <ion-item no-lines>        
-        <ion-label stacked>Name</ion-label>
+      <ion-item>  
+       
+        <ion-label color="primary" floating>Name</ion-label>
         <ion-input type="text" name="name" [(ngModel)]="hero.name" required></ion-input>
       </ion-item>
 
-      <ion-item no-lines>
-        <ion-label stacked>Alter Ego</ion-label>
+      <ion-item>
+        <ion-label color="primary" floating>Alter Ego</ion-label>
         <ion-input type="text" name="alterEgo" [(ngModel)]="hero.alterEgo"></ion-input>
       </ion-item>
 
       <ion-item no-lines>
-        <ion-label stacked>Super Power</ion-label>
+        <ion-label color="primary" fixed>Super Power</ion-label>  
         <ion-select name="power" [(ngModel)]="hero.power">
           <ion-option *ngFor="let power of powers" value="{{power}}">{{ power }}</ion-option>
         </ion-select>

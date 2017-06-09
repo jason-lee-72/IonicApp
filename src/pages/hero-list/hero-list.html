@@ -14,29 +14,18 @@
 </ion-header>
 
 <ion-content>
-
-<ion-list>
-  <ion-item-sliding *ngFor="let hero of heroes" (click)="itemTapped($event, hero._id)">
-    <ion-item>
-    {{ hero.name }}
-      <div class="item-note" item-right>
-        {{ hero.alterEgo }}
-      </div>
-    </ion-item>
- 
-    <ion-item-options>
-      <button danger (click)="removeHeroFromList(hero)"><ion-icon name="trash"></ion-icon> Delete</button>
-    </ion-item-options>
-  </ion-item-sliding>
-</ion-list>
-
-  <!--<ion-list>
-    <button ion-item *ngFor="let hero of heroes" (click)="itemTapped($event, hero._id)">
+  <ion-list>
+    <ion-item-sliding #slidingItem *ngFor="let hero of heroes" (click)="itemTapped($event, slidingItem, hero._id)">
+      <ion-item>
       {{ hero.name }}
-      <div class="item-note" item-right>
-        {{ hero.alterEgo }}
-      </div>
-    </button>
-    
-  </ion-list>-->
+        <div class="item-note" item-right>
+          {{ hero.alterEgo }}
+        </div>
+      </ion-item>
+  
+      <ion-item-options>
+        <button ion-button small color="danger" (click)="deleteHero(hero, slidingItem)"><ion-icon name="trash"></ion-icon> Delete</button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
 </ion-content>
