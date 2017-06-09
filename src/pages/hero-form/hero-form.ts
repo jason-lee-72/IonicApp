@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { Hero, POWERS } from '../../app/models/hero';
@@ -21,7 +21,8 @@ export class HeroFormPage implements OnInit {
   hero: Hero;
   powers = POWERS;
   mapPage = MapPage;
-
+  @ViewChild('heroForm') heroForm;
+  
   addCallback: (hero: Hero) => void;
   updateCallback: (hero: Hero) => void;
   deleteCallback: (hero: Hero) => void;
@@ -64,7 +65,6 @@ export class HeroFormPage implements OnInit {
   deleteHero() {
     const confirmDelete = this.alertCtrl.create({
       title: 'Delete hero?',
-      message: 'Delete this hero?',
       buttons: [
         {
           text: "OK",
@@ -84,5 +84,13 @@ export class HeroFormPage implements OnInit {
     });
 
     confirmDelete.present();
+  }
+
+  onMapClick(e) {
+    console.log('map was clicked', e);
+  }
+
+  onMapReady(e) {
+    console.log('map is ready', e);
   }
 }

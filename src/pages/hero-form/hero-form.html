@@ -10,18 +10,15 @@
     <ion-spinner *ngIf="!hero"></ion-spinner>
     <ion-title>{{ hero && (hero.name || 'New Hero') }}</ion-title>
     <ion-buttons *ngIf="hero && hero._id" end>
-      <button ion-button icon-only (click)="deleteHero()">
-        <ion-icon name="trash"></ion-icon>
-      </button>
+      <button *ngIf="heroForm" ion-button [disabled]="!heroForm.form.valid || !heroForm.form.dirty" (click)="submitForm()">Save</button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-
-
 <ion-content padding>
-  <form (ngSubmit)="submitForm()" #heroForm="ngForm" *ngIf="hero">
-    <ion-list>
-      <ion-item no-lines>
+  
+  <form #heroForm="ngForm">
+    <ion-list *ngIf="hero">
+      <ion-item no-lines>        
         <ion-label stacked>Name</ion-label>
         <ion-input type="text" name="name" [(ngModel)]="hero.name" required></ion-input>
       </ion-item>
@@ -38,15 +35,12 @@
         </ion-select>
       </ion-item>
     </ion-list>
-    <ion-buttons end>
-      <button ion-button type="submit" [disabled]="!heroForm.valid || !heroForm.dirty">OK</button>
-    </ion-buttons>
   </form>
   <div>
     <span>before</span>
-    <google-map height="200px"></google-map>
+    <google-map height="200px" (mapClick)="onMapClick($event)" (mapReady)="onMapReady(e)"></google-map>
     <span>after</span>
   </div>
   
-  <button ion-button [navPush]="mapPage">Go Maps</button>
+  <!--<button ion-button [navPush]="mapPage">Go Maps</button>-->
 </ion-content>

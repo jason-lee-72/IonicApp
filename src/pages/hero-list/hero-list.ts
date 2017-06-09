@@ -13,11 +13,11 @@ import { HeroService } from '../../app/services/hero.service';
 })
 export class HeroListPage implements OnInit {
   heroes: Array<Hero>;
-  
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private heroService: HeroService) {
   }
 
-  ngOnInit () {
+  ngOnInit() {
     this.heroService.getHeroesObservable().subscribe(heroes => {
       this.heroes = heroes;
     })
@@ -30,7 +30,7 @@ export class HeroListPage implements OnInit {
       deleteCallback: this.removeHeroFromList.bind(this)
     });
   }
-  
+
   addHero() {
     this.navCtrl.push(HeroFormPage, {
       addCallback: this.addHeroToList.bind(this)
@@ -48,6 +48,4 @@ export class HeroListPage implements OnInit {
   addHeroToList(newHero: Hero) {
     this.heroes.push(newHero);
   }
-
-  
 }
