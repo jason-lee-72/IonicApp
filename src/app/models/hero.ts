@@ -5,9 +5,16 @@ export class Hero extends BaseModel {
     public _id?: number,
     public name?: string,
     public power?: string,
-    public alterEgo?: string
+    public alterEgo?: string,
+    public coordinates?: {
+      longitude?: number,
+      latitude?: number
+    }
   ) {  
     super();
+
+    if (!coordinates)
+      this.coordinates = {};
   }
 }
 

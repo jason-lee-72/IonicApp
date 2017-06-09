@@ -19,7 +19,6 @@
   <form #heroForm="ngForm">
     <ion-list *ngIf="hero">
       <ion-item>  
-       
         <ion-label color="primary" floating>Name</ion-label>
         <ion-input type="text" name="name" [(ngModel)]="hero.name" required></ion-input>
       </ion-item>
@@ -27,6 +26,16 @@
       <ion-item>
         <ion-label color="primary" floating>Alter Ego</ion-label>
         <ion-input type="text" name="alterEgo" [(ngModel)]="hero.alterEgo"></ion-input>
+      </ion-item>
+
+
+      <ion-item>  
+        <ion-label color="primary" floating>Latitude</ion-label>
+        <ion-input type="number" name="latitude" [(ngModel)]="hero.coordinates.latitude"></ion-input>
+      </ion-item>
+      <ion-item>  
+        <ion-label color="primary" floating>Longitude</ion-label>
+        <ion-input type="number" name="longitude" [(ngModel)]="hero.coordinates.longitude"></ion-input>
       </ion-item>
 
       <ion-item no-lines>
@@ -39,7 +48,9 @@
   </form>
   <div>
     <span>before</span>
-    <google-map height="200px" (mapClick)="onMapClick($event)" (mapReady)="onMapReady(e)"></google-map>
+    <google-map height="200px" (mapClick)="onMapClick($event)" (mapReady)="onMapReady(e)">
+      
+    </google-map>
     <span>after</span>
   </div>
   
