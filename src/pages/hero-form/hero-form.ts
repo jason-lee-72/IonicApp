@@ -5,7 +5,8 @@ import { Hero, POWERS } from '../../app/models/hero';
 import { HeroService } from '../../app/services/hero.service';
 
 import { MapPage } from '../map/map';
-
+import { GoogleMapComponent } from '../../components/google-map/google-map';
+import { LatLng } from '@ionic-native/google-maps';
 /**
  * Generated class for the HeroFormPage page.
  *
@@ -21,7 +22,7 @@ export class HeroFormPage implements OnInit {
   hero: Hero;
   powers = POWERS;
   mapPage = MapPage;
-  @ViewChild('heroForm') heroForm;
+  @ViewChild(GoogleMapComponent) mapComponent;
   
   addCallback: (hero: Hero) => void;
   updateCallback: (hero: Hero) => void;
@@ -87,10 +88,12 @@ export class HeroFormPage implements OnInit {
   }
 
   onMapClick(e) {
-    console.log('map was clicked', e);
+    console.log('map was clicked', e.longitude, ' ', e.latitude);
   }
 
   onMapReady(e) {
     console.log('map is ready', e);
+    if (this.hero.coordinates)
+      this.mapComponent.map.setCenter(new LatLng(this.hero.coordinates.latitude, this.hero.coordinates.longitude));
   }
 }

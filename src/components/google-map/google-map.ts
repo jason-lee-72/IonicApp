@@ -38,6 +38,16 @@ export class GoogleMapComponent implements OnInit {
     return this._width;
   }
 
+  _options: any = {};
+  @Input()
+  set options(val: any) {
+    this._options = val;
+  }
+
+  get options() {
+    return this._options;
+  }
+
   @Output()
   mapClick: EventEmitter<any> = new EventEmitter<any>();
 
