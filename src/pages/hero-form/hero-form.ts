@@ -6,7 +6,7 @@ import { HeroService } from '../../app/services/hero.service';
 
 import { MapPage } from '../map/map';
 import { GoogleMapComponent } from '../../components/google-map/google-map';
-import { LatLng } from '@ionic-native/google-maps';
+import { LatLng, Marker } from '@ionic-native/google-maps';
 /**
  * Generated class for the HeroFormPage page.
  *
@@ -88,7 +88,7 @@ export class HeroFormPage implements OnInit {
   }
 
   onMapClick(e) {
-    console.log('map was clicked', e.longitude, ' ', e.latitude);
+    console.log('map was clicked', e[0], ' - ', e[1]);
   }
 
   onMapReady(e) {
