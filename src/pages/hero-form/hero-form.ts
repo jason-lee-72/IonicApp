@@ -6,7 +6,7 @@ import { HeroService } from '../../app/services/hero.service';
 
 import { MapPage } from '../map/map';
 import { GoogleMapComponent } from '../../components/google-map/google-map';
-import { LatLng, Marker } from '@ionic-native/google-maps';
+import { LatLng, Marker, MarkerOptions } from '@ionic-native/google-maps';
 /**
  * Generated class for the HeroFormPage page.
  *
@@ -23,6 +23,7 @@ export class HeroFormPage implements OnInit {
   powers = POWERS;
   mapPage = MapPage;
   @ViewChild(GoogleMapComponent) mapComponent;
+  mapMarker: Marker;
   
   addCallback: (hero: Hero) => void;
   updateCallback: (hero: Hero) => void;
@@ -87,8 +88,20 @@ export class HeroFormPage implements OnInit {
     confirmDelete.present();
   }
 
-  onMapClick(e) {
-    console.log('map was clicked', e[0], ' - ', e[1]);
+  onMapClick(e: LatLng) {
+    console.log('map was clicked', e.lat, ' - ', e.lng);
+    if (!this.mapMarker) {
+      const markerOptions: MarkerOptions = {
+        title: this.hero.name,
+        snippet: this.hero.alterEgo,
+        position: new LatLng(e.lat, e.lng)
+      };
+      this.mapComponent.map.addMarker(markerOptions).then((marker) => {
+        this.mapMarker = marker;
+      });
+    } else {
+      this.mapMarker.setPosition(new LatLng(e.lat, e.lng));
+    }
   }
 
   onMapReady(e) {
