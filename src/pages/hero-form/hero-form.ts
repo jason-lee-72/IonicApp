@@ -45,6 +45,8 @@ export class HeroFormPage implements OnInit {
     if (heroId) {
       this.heroService.getHero(this.navParams.get('heroId')).then(hero => {
         this.hero = hero;
+        if (this.mapComponent && this.hero.coordinates)
+          this.mapComponent.map.setCenter(new LatLng(this.hero.coordinates.latitude, this.hero.coordinates.longitude));
       });
     }
     else
@@ -106,7 +108,7 @@ export class HeroFormPage implements OnInit {
 
   onMapReady(e) {
     console.log('map is ready', e);
-    if (this.hero.coordinates)
+    if (this.hero && this.hero.coordinates)
       this.mapComponent.map.setCenter(new LatLng(this.hero.coordinates.latitude, this.hero.coordinates.longitude));
   }
 }
