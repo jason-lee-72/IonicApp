@@ -24,7 +24,7 @@ export class HeroFormPage implements OnInit, AfterViewInit {
   mapPage = MapPage;
   @ViewChild(GoogleMapComponent) mapComponent;
   mapMarker: Marker;
-  
+
   addCallback: (hero: Hero) => void;
   updateCallback: (hero: Hero) => void;
   deleteCallback: (hero: Hero) => void;
@@ -45,8 +45,11 @@ export class HeroFormPage implements OnInit, AfterViewInit {
     if (heroId) {
       this.heroService.getHero(this.navParams.get('heroId')).then(hero => {
         this.hero = hero;
-        if (this.mapComponent && this.hero.coordinates)
-          this.mapComponent.map.setCenter(new LatLng(this.hero.coordinates.latitude, this.hero.coordinates.longitude));
+        if (this.hero.coordinates) {
+          const latLng: LatLng = new LatLng(this.hero.coordinates.latitude, this.hero.coordinates.longitude);
+          this.addOrSetMarker(latLng);
+          this.mapComponent.map.setCenter(latLng);
+        }
       });
     }
     else
@@ -54,11 +57,7 @@ export class HeroFormPage implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    if (this.hero.coordinates) {
-        const latLng: LatLng = new LatLng(this.hero.coordinates.latitude, this.hero.coordinates.longitude);
-        this.addOrSetMarker(latLng);
-        this.mapComponent.map.setCenter(latLng);
-    }          
+
   }
 
   submitForm() {
@@ -105,8 +104,6 @@ export class HeroFormPage implements OnInit, AfterViewInit {
 
   onMapReady(e) {
     console.log('map is ready', e);
-    if (this.hero && this.hero.coordinates)
-      this.mapComponent.map.setCenter(new LatLng(this.hero.coordinates.latitude, this.hero.coordinates.longitude));
   }
 
   addOrSetMarker(latLng: LatLng) {
