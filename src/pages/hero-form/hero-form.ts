@@ -46,9 +46,8 @@ export class HeroFormPage implements OnInit, AfterViewInit {
       this.heroService.getHero(this.navParams.get('heroId')).then(hero => {
         this.hero = hero;
         if (this.hero.coordinates) {
-          const latLng: LatLng = new LatLng(this.hero.coordinates.latitude, this.hero.coordinates.longitude);
-          this.addOrSetMarker(latLng);
-          this.mapComponent.map.setCenter(latLng);
+          this.addOrSetMarker();
+          this.mapComponent.map.setCenter(this.hero.coordinates);
         }
       });
     }
@@ -98,25 +97,25 @@ export class HeroFormPage implements OnInit, AfterViewInit {
   }
 
   onMapClick(e: LatLng) {
-    console.log('map was clicked', e.lat, ' - ', e.lng);
-    this.addOrSetMarker(e);
+    this.hero.coordinates = e;
+    this.addOrSetMarker();
   }
 
   onMapReady(e) {
     console.log('map is ready', e);
   }
 
-  addOrSetMarker(latLng: LatLng) {
+  addOrSetMarker() {
     if (!this.mapMarker) {
       const markerOptions: MarkerOptions = {
         title: this.hero.name,
         snippet: this.hero.alterEgo,
-        position: latLng
+        position: this.hero.coordinates
       };
       this.mapComponent.map.addMarker(markerOptions).then((marker) => {
         this.mapMarker = marker;
       });
     } else
-      this.mapMarker.setPosition(latLng);
+      this.mapMarker.setPosition(this.hero.coordinates);
   }
 }

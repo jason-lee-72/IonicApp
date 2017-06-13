@@ -1,4 +1,5 @@
 import { BaseModel } from './base-model'
+import { LatLng } from '@ionic-native/google-maps';
 
 export class Hero extends BaseModel {
   constructor(
@@ -6,10 +7,7 @@ export class Hero extends BaseModel {
     public name?: string,
     public power?: string,
     public alterEgo?: string,
-    public coordinates?: {
-      longitude?: number,
-      latitude?: number
-    }
+    public coordinates?: LatLng
   ) {  
     super();
 
