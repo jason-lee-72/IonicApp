@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { Hero, POWERS } from '../../app/models/hero';
@@ -18,7 +18,7 @@ import { LatLng, Marker, MarkerOptions } from '@ionic-native/google-maps';
   selector: 'page-hero-form',
   templateUrl: 'hero-form.html',
 })
-export class HeroFormPage implements OnInit {
+export class HeroFormPage implements OnInit, AfterViewInit {
   hero: Hero;
   powers = POWERS;
   mapPage = MapPage;
@@ -51,6 +51,14 @@ export class HeroFormPage implements OnInit {
     }
     else
       this.hero = new Hero();
+  }
+
+  ngAfterViewInit() {
+    if (this.hero.coordinates) {
+        const latLng: LatLng = new LatLng(this.hero.coordinates.latitude, this.hero.coordinates.longitude);
+        this.addOrSetMarker(latLng);
+        this.mapComponent.map.setCenter(latLng);
+    }          
   }
 
   submitForm() {
@@ -92,23 +100,26 @@ export class HeroFormPage implements OnInit {
 
   onMapClick(e: LatLng) {
     console.log('map was clicked', e.lat, ' - ', e.lng);
-    if (!this.mapMarker) {
-      const markerOptions: MarkerOptions = {
-        title: this.hero.name,
-        snippet: this.hero.alterEgo,
-        position: new LatLng(e.lat, e.lng)
-      };
-      this.mapComponent.map.addMarker(markerOptions).then((marker) => {
-        this.mapMarker = marker;
-      });
-    } else {
-      this.mapMarker.setPosition(new LatLng(e.lat, e.lng));
-    }
+    this.addOrSetMarker(e);
   }
 
   onMapReady(e) {
     console.log('map is ready', e);
     if (this.hero && this.hero.coordinates)
       this.mapComponent.map.setCenter(new LatLng(this.hero.coordinates.latitude, this.hero.coordinates.longitude));
+  }
+
+  addOrSetMarker(latLng: LatLng) {
+    if (!this.mapMarker) {
+      const markerOptions: MarkerOptions = {
+        title: this.hero.name,
+        snippet: this.hero.alterEgo,
+        position: latLng
+      };
+      this.mapComponent.map.addMarker(markerOptions).then((marker) => {
+        this.mapMarker = marker;
+      });
+    } else
+      this.mapMarker.setPosition(latLng);
   }
 }
