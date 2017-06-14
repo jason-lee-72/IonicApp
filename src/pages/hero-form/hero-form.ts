@@ -26,6 +26,7 @@ export class HeroFormPage implements OnInit {
   @ViewChild(GoogleMapComponent) mapComponent;
   @ViewChild(NgForm) heroForm;
   mapMarker: Marker;
+  mapOptions: any = { zoomControl: true };
 
   addCallback: (hero: Hero) => void;
   updateCallback: (hero: Hero) => void;
@@ -48,6 +49,8 @@ export class HeroFormPage implements OnInit {
         if (this.hero.coordinates) {
           this.addOrSetMarker();
           this.mapComponent.map.setCenter(this.hero.coordinates);
+          this.mapOptions.zoom = 4;
+          this.mapOptions.center = this.hero.coordinates;
         }
       });
     }

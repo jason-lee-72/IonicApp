@@ -32,7 +32,7 @@
         <ion-label color="primary" floating>Latitude</ion-label>
         <ion-input type="number" name="lat" [(ngModel)]="hero.coordinates.lat"></ion-input>
       </ion-item>
-      
+
       <ion-item hidden>
         <ion-label color="primary" floating>Longitude</ion-label>
         <ion-input type="number" name="lng" [(ngModel)]="hero.coordinates.lng"></ion-input>
@@ -47,6 +47,6 @@
     </ion-list>
   </form>
   <div>
-    <google-map height="200px" (mapClick)="onMapClick($event)" (mapReady)="onMapReady(e)" (options)="{}"></google-map>
+    <google-map height="200px" (mapClick)="onMapClick($event)" (mapReady)="onMapReady(e)" (options)="mapOptions"></google-map>
   </div>
 </ion-content>
