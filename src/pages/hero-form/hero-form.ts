@@ -69,8 +69,10 @@ export class HeroFormPage implements OnInit {
   }
 
   onMapClick(e: LatLng) {
-    this.heroForm.controls.lat.setValue(e.lat);
-    this.heroForm.controls.lng.setValue(e.lng);
+    this.hero.coordinates = e;
+
+    this.heroForm.controls.lat.markAsDirty();
+    this.heroForm.controls.lng.markAsDirty();
     
     this.addOrSetMarker();
   }
