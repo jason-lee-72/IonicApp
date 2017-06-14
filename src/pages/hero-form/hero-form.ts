@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { NgForm } from '@angular/forms';
 
 import { Hero, POWERS } from '../../app/models/hero';
 import { HeroService } from '../../app/services/hero.service';
@@ -18,11 +19,12 @@ import { LatLng, Marker, MarkerOptions } from '@ionic-native/google-maps';
   selector: 'page-hero-form',
   templateUrl: 'hero-form.html',
 })
-export class HeroFormPage implements OnInit, AfterViewInit {
+export class HeroFormPage implements OnInit {
   hero: Hero;
   powers = POWERS;
   mapPage = MapPage;
   @ViewChild(GoogleMapComponent) mapComponent;
+  @ViewChild(NgForm) heroForm;
   mapMarker: Marker;
 
   addCallback: (hero: Hero) => void;
@@ -53,10 +55,6 @@ export class HeroFormPage implements OnInit, AfterViewInit {
       this.hero = new Hero();      
   }
 
-  ngAfterViewInit() {
-
-  }
-
   submitForm() {
     if (this.hero._id)
       this.heroService.update(this.hero).then(() => {
@@ -72,6 +70,7 @@ export class HeroFormPage implements OnInit, AfterViewInit {
 
   onMapClick(e: LatLng) {
     this.hero.coordinates = e;
+    this.heroForm;
     this.addOrSetMarker();
   }
 
