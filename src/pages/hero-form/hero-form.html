@@ -47,6 +47,6 @@
     </ion-list>
   </form>
   <div>
-    <google-map height="200px" (mapClick)="onMapClick($event)" (mapReady)="onMapReady(e)" (options)="mapOptions"></google-map>
+    <google-map height="200px" (mapClick)="onMapClick($event)" (mapReady)="onMapReady(e)" [options]="mapOptions"></google-map>
   </div>
 </ion-content>
