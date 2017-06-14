@@ -10,6 +10,8 @@ export class Hero extends BaseModel {
     public coordinates?: LatLng
   ) {  
     super();
+    if (!coordinates)
+      this.coordinates = new LatLng(0, 0);
   }
 }
 

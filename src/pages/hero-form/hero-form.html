@@ -47,12 +47,6 @@
     </ion-list>
   </form>
   <div>
-    <span>before</span>
-    <google-map height="200px" (mapClick)="onMapClick($event)" (mapReady)="onMapReady(e)">
-      
-    </google-map>
-    <span>after</span>
+    <google-map height="200px" (mapClick)="onMapClick($event)" (mapReady)="onMapReady(e)" (options)="{}"></google-map>
   </div>
-  
-  <!--<button ion-button [navPush]="mapPage">Go Maps</button>-->
 </ion-content>

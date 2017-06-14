@@ -9,9 +9,7 @@ import {
   template: ' '
 })
 export class GoogleMapComponent implements OnInit {
-
   private mapContainer: HTMLElement;
-
   map: GoogleMap;
 
   private isInit: boolean = false;
@@ -44,16 +42,11 @@ export class GoogleMapComponent implements OnInit {
     this._options = val;
   }
 
-  get options() {
-    return this._options;
-  }
-
   @Output()
   mapClick: EventEmitter<any> = new EventEmitter<any>();
 
   @Output()
   mapReady: EventEmitter<GoogleMap> = new EventEmitter<GoogleMap>();
-
 
   constructor(
     private platform: Platform,
@@ -65,12 +58,11 @@ export class GoogleMapComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.setupContainer();
 
     this.platform.ready()
       .then(() => {
-        this.map = this.googleMaps.create(this.mapContainer);
+        this.map = this.googleMaps.create(this.mapContainer, this._options);
 
         this.map.one(GoogleMapsEvent.MAP_READY)
           .then(() => {
@@ -80,9 +72,7 @@ export class GoogleMapComponent implements OnInit {
 
         this.map.on(GoogleMapsEvent.MAP_CLICK)
           .subscribe(data => this.mapClick.emit(data));
-
       });
-
   }
 
   ngOnDestroy() {
@@ -105,5 +95,4 @@ export class GoogleMapComponent implements OnInit {
   private setHeight() {
     this.renderer.setElementStyle(this.mapContainer, 'height', this._height);
   }
-
 }

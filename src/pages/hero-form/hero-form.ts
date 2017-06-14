@@ -27,7 +27,6 @@ export class HeroFormPage implements OnInit, AfterViewInit {
 
   addCallback: (hero: Hero) => void;
   updateCallback: (hero: Hero) => void;
-  deleteCallback: (hero: Hero) => void;
 
   constructor(
     public navCtrl: NavController,
@@ -40,7 +39,6 @@ export class HeroFormPage implements OnInit, AfterViewInit {
     const heroId: number = this.navParams.get('heroId');
     this.addCallback = this.navParams.get('addCallback');
     this.updateCallback = this.navParams.get('updateCallback');
-    this.deleteCallback = this.navParams.get('deleteCallback');
 
     if (heroId) {
       this.heroService.getHero(this.navParams.get('heroId')).then(hero => {
@@ -52,7 +50,7 @@ export class HeroFormPage implements OnInit, AfterViewInit {
       });
     }
     else
-      this.hero = new Hero();
+      this.hero = new Hero();      
   }
 
   ngAfterViewInit() {
@@ -70,30 +68,6 @@ export class HeroFormPage implements OnInit, AfterViewInit {
         this.addCallback(addedHero);
         this.navCtrl.pop();
       });
-  }
-
-  deleteHero() {
-    const confirmDelete = this.alertCtrl.create({
-      title: 'Delete hero?',
-      buttons: [
-        {
-          text: "OK",
-          handler: () => {
-            this.heroService.delete(this.hero._id).then(() => {
-              this.deleteCallback(this.hero);
-              this.navCtrl.pop();
-            });
-          }
-        },
-        {
-          text: "Cancel",
-          handler: () => {
-          }
-        }
-      ]
-    });
-
-    confirmDelete.present();
   }
 
   onMapClick(e: LatLng) {
