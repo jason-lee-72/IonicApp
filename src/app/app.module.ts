@@ -8,43 +8,37 @@ import { MyApp } from './app.component';
 
 import { HeroService } from './services/hero.service';
 
-import { HelloIonicPage } from '../pages/hello-ionic/hello-ionic';
-import { ItemDetailsPage } from '../pages/item-details/item-details';
-import { ListPage } from '../pages/list/list';
 import { HeroListPage } from '../pages/hero-list/hero-list';
 import { HeroFormPage } from '../pages/hero-form/hero-form';
-import { MapPage } from '../pages/map/map';
+import { LoginPage } from '../pages/login/login';
+
 import { GoogleMapComponent } from '../components/google-map/google-map';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { GoogleMaps } from '@ionic-native/google-maps';
+import { Facebook } from '@ionic-native/facebook';
+
 
 @NgModule({
   declarations: [
     MyApp,
-    HelloIonicPage,
-    ItemDetailsPage,
-    ListPage,
+    LoginPage,
     HeroListPage,
     HeroFormPage,
-    MapPage,
     GoogleMapComponent
   ],
   imports: [
     HttpModule,
     BrowserModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    HelloIonicPage,
-    ItemDetailsPage,
-    ListPage,
+    MyApp,    
+    LoginPage,
     HeroListPage,
-    HeroFormPage,
-    MapPage
+    HeroFormPage
   ],
   providers: [
     HeroService,
@@ -52,6 +46,7 @@ import { GoogleMaps } from '@ionic-native/google-maps';
     SplashScreen,
     GoogleMaps,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    Facebook
   ]
 })
 export class AppModule {}

@@ -21,6 +21,7 @@
     "@angular/platform-browser": "4.1.2",
     "@angular/platform-browser-dynamic": "4.1.2",
     "@ionic-native/core": "3.10.2",
+    "@ionic-native/facebook": "^3.12.1",
     "@ionic-native/file": "^3.10.3",
     "@ionic-native/geolocation": "^3.12.1",
     "@ionic-native/google-maps": "^3.12.1",
@@ -32,6 +33,7 @@
     "cordova-plugin-compat": "^1.0.0",
     "cordova-plugin-console": "^1.0.5",
     "cordova-plugin-device": "^1.1.4",
+    "cordova-plugin-facebook4": "^1.9.1",
     "cordova-plugin-file": "^4.3.3",
     "cordova-plugin-geolocation": "^2.4.3",
     "cordova-plugin-googlemaps": "^1.4.0",
@@ -70,6 +72,10 @@
         "API_KEY_FOR_IOS": "AIzaSyBFJCVQ6LjNW5L_Cg4uv2P1CAkytacsMXc",
         "NSLOCATIONWHENINUSEUSAGEDESCRIPTION": "Show your location on the map",
         "NSLOCATIONALWAYSUSAGEDESCRIPTION": "Trace your location on the map"
+      },
+      "cordova-plugin-facebook4": {
+        "APP_ID": "811670902332548",
+        "APP_NAME": "JasonsTestApp"
       }
     },
     "platforms": [
