@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { NavController, NavParams, ItemSliding, AlertController } from 'ionic-angular';
+import { NavController, NavParams, ItemSliding, AlertController, LoadingController, Loading } from 'ionic-angular';
 
 import { HeroFormPage } from '../hero-form/hero-form';
 
@@ -13,14 +13,48 @@ import { HeroService } from '../../app/services/hero.service';
 })
 export class HeroListPage implements OnInit {
   heroes: Array<Hero>;
+  loading: Loading;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private heroService: HeroService, private alertCtrl: AlertController) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public heroService: HeroService,
+    public alertCtrl: AlertController,
+    public loadingCtrl: LoadingController) {
+    
+    this.loading = this.loadingCtrl.create({
+      content: 'Loading ...'
+    });
   }
 
   ngOnInit() {
-    this.heroService.getHeroesObservable().subscribe(heroes => {
-      this.heroes = heroes;
-    })
+    this.loading.present();
+
+    this.heroService.getHeroes().subscribe(
+      heroes => {
+        this.heroes = heroes;
+      },
+      response => {
+        this.showErrorAlert(response, 'Couldn\'t get heroes.');
+        this.heroes = [];
+      },
+      ()=>this.loading.dismiss()
+    );
+  }
+
+  showErrorAlert(response: Response, message: string) {
+    const errorAlert = this.alertCtrl.create({
+      title: 'Error',
+      message: message,
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+          }
+        }
+      ]
+    });
+    errorAlert.present();
   }
 
   itemTapped(event, slidingItem: ItemSliding, heroId: number) {
@@ -44,9 +78,14 @@ export class HeroListPage implements OnInit {
         {
           text: "OK",
           handler: () => {
-            this.heroService.delete(heroToDelete._id).then(() => {
-              this.heroes.splice(this.heroes.findIndex(hero => hero._id == heroToDelete._id), 1);
-            });
+            this.heroService.delete(heroToDelete._id).subscribe(
+              () => {
+                this.heroes.splice(this.heroes.findIndex(hero => hero._id == heroToDelete._id), 1);
+              },
+              response => {
+                this.showErrorAlert(response, 'Couldn\'t delete hero.');
+              }
+            );
           }
         },
         {
@@ -67,10 +106,6 @@ export class HeroListPage implements OnInit {
 
   addHeroToList(newHero: Hero) {
     this.heroes.push(newHero);
-  }
-
-  slidingItemDrag(slidingItem: ItemSliding) {
-    
   }
 }
 1

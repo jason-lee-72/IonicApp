@@ -1,11 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, Loading } from 'ionic-angular';
 import { NgForm } from '@angular/forms';
 
 import { Hero, POWERS } from '../../app/models/hero';
 import { HeroService } from '../../app/services/hero.service';
 
-import { MapPage } from '../map/map';
 import { GoogleMapComponent } from '../../components/google-map/google-map';
 import { LatLng, Marker, MarkerOptions } from '@ionic-native/google-maps';
 /**
@@ -22,11 +21,11 @@ import { LatLng, Marker, MarkerOptions } from '@ionic-native/google-maps';
 export class HeroFormPage implements OnInit {
   hero: Hero;
   powers = POWERS;
-  mapPage = MapPage;
   @ViewChild(GoogleMapComponent) mapComponent;
   @ViewChild(NgForm) heroForm;
   mapMarker: Marker;
   mapOptions: any = { zoomControl: true };
+  loading: Loading;
 
   addCallback: (hero: Hero) => void;
   updateCallback: (hero: Hero) => void;
@@ -34,6 +33,7 @@ export class HeroFormPage implements OnInit {
   constructor(
     public navCtrl: NavController,
     public alertCtrl: AlertController,
+    public loadingCtrl: LoadingController,
     public navParams: NavParams,
     public heroService: HeroService) {
   }
@@ -44,31 +44,70 @@ export class HeroFormPage implements OnInit {
     this.updateCallback = this.navParams.get('updateCallback');
 
     if (heroId) {
-      this.heroService.getHero(this.navParams.get('heroId')).then(hero => {
-        this.hero = hero;
-        if (this.hero.coordinates) {
-          this.addOrSetMarker();
-          this.mapComponent.map.setCenter(this.hero.coordinates);
-          this.mapOptions.zoom = 4;
-          this.mapOptions.center = this.hero.coordinates;
-        }
-      });
+      const loading: Loading = this.showLoading('Loading...');
+      this.heroService.getHero(this.navParams.get('heroId')).subscribe(
+        hero => {
+          this.hero = hero;
+          if (this.hero.coordinates) {
+            this.addOrSetMarker();
+            this.mapComponent.map.setCenter(this.hero.coordinates);
+            this.mapOptions.zoom = 4;
+            this.mapOptions.center = this.hero.coordinates;
+          }
+        },
+        response => {
+          this.showErrorAlert(response, 'Couldn\'t get hero.').then(()=>this.navCtrl.pop());
+        },
+        ()=>loading.dismiss()
+      );
     }
     else
       this.hero = new Hero();      
   }
 
+  showLoading(content: string): Loading {
+    const loading = this.loadingCtrl.create({
+      content: content 
+    });
+
+    loading.present();
+    return loading;
+  }
+
+  showErrorAlert(response: Response, message: string): Promise<any> {
+    const errorAlert = this.alertCtrl.create({
+      title: 'Error',
+      message: message,
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+          }
+        }
+      ]
+    });
+    return errorAlert.present();
+  }
+
   submitForm() {
+    const saving: Loading = this.showLoading('Saving...');
     if (this.hero._id)
-      this.heroService.update(this.hero).then(() => {
-        this.updateCallback(this.hero);
-        this.navCtrl.pop();
-      })
+      this.heroService.update(this.hero).subscribe(
+        (hero) => {
+          this.updateCallback(hero);
+          this.navCtrl.pop();
+        },
+        response => this.showErrorAlert(response, 'Couldn\'t update hero'),
+        ()=>saving.dismiss()
+      );
     else
-      this.heroService.create(this.hero).then((addedHero: Hero) => {
-        this.addCallback(addedHero);
-        this.navCtrl.pop();
-      });
+      this.heroService.create(this.hero).subscribe(
+        (addedHero: Hero) => {
+          this.addCallback(addedHero);
+          this.navCtrl.pop();
+        },
+        response => this.showErrorAlert(response, 'Couldn\'t create hero'),
+        ()=>saving.dismiss());
   }
 
   onMapClick(e: LatLng) {

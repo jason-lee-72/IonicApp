@@ -5,9 +5,7 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar>
-    <ion-spinner *ngIf="!hero"></ion-spinner>
     <ion-title>{{ hero && (hero.name || 'New Hero') }}</ion-title>
     <ion-buttons end>  
       <button *ngIf="heroForm" ion-button [disabled]="!heroForm.form.valid || !heroForm.form.dirty" (click)="submitForm()">Save</button>

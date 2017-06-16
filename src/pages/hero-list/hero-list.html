@@ -3,9 +3,8 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-spinner *ngIf="!heroes"></ion-spinner>
-    <ion-title *ngIf="heroes">Heroes</ion-title>
-    <ion-buttons *ngIf="heroes" end>
+    <ion-title>Heroes</ion-title>
+    <ion-buttons end>
       <button ion-button icon-only (click)="addHero()">
         <ion-icon name="add"></ion-icon>
       </button>

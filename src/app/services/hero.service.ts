@@ -16,59 +16,46 @@ export class HeroService {
 
     constructor(private http: Http) { }
 
-    getHeroes(): Promise<Hero[]> {
-        return this.http.get(this.heroesUrl)
-                .toPromise()
-                .then(response => response.json().data as Hero[])
-                .catch(this.handleError);
-    }
+    // getHeroes(): Promise<Hero[]> {
+    //     return this.http.get(this.heroesUrl)
+    //             .toPromise()
+    //             .then(response => response.json().data as Hero[])
+    //             .catch(this.handleError);
+    // }
 
-    getHeroesObservable(): Observable<Hero[]> {
+    getHeroes(): Observable<Hero[]> {
         return this.http.get(this.heroesUrl)
             .map((res: Response) => {
                 return res.json().data;
             })
     }
 
-    private handleError(error: any): Promise<any> {
-        return Promise.reject(error);
-    }
-
-    getHero(id: number): Promise<Hero> {
+    getHero(id: number): Observable<Hero> {
         const url = `${this.heroesUrl}/${id}`;
 
         return this.http.get(url)
-                .toPromise()
-                .then(response => 
-                    response.json().data as Hero
-                )
-                .catch(this.handleError);
+                .map(response => {
+                    return response.json().data;   
+                });
     }
 
-    update(hero: Hero): Promise<Hero> {
+    update(hero: Hero): Observable<Hero> {
         const url = `${this.heroesUrl}/${hero._id}`;
         return this.http
             .put(url, JSON.stringify(hero), {headers: this.headers})
-            .toPromise()
-            .then(() => hero)
-            .catch(this.handleError);
+            .map(response => response.json());
     }
 
-    create(hero: Hero): Promise<Hero> {
+    create(hero: Hero): Observable<Hero> {
         delete hero._id;
         
         return this.http
             .post(this.heroesUrl, JSON.stringify(hero), {headers: this.headers})
-            .toPromise()
-            .then(res => res.json().data)
-            .catch(this.handleError);
+            .map(response => response.json().data);
     }
 
-    delete(id: number): Promise<void> {
+    delete(id: number): Observable<void> {
         const url = `${this.heroesUrl}/${id}`;
-        return this.http.delete(url, {headers: this.headers})
-            .toPromise()
-            .then(() => null)
-            .catch(this.handleError);
+        return this.http.delete(url, {headers: this.headers}).map(()=>{});
     }
 }

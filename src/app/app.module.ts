@@ -11,6 +11,7 @@ import { HeroService } from './services/hero.service';
 import { HeroListPage } from '../pages/hero-list/hero-list';
 import { HeroFormPage } from '../pages/hero-form/hero-form';
 import { LoginPage } from '../pages/login/login';
+import { SignupPage } from '../pages/signup/signup';
 
 import { GoogleMapComponent } from '../components/google-map/google-map';
 
@@ -19,13 +20,13 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { GoogleMaps } from '@ionic-native/google-maps';
 import { Facebook } from '@ionic-native/facebook';
 
-
 @NgModule({
   declarations: [
     MyApp,
     LoginPage,
     HeroListPage,
     HeroFormPage,
+    SignupPage,
     GoogleMapComponent
   ],
   imports: [
@@ -38,7 +39,8 @@ import { Facebook } from '@ionic-native/facebook';
     MyApp,    
     LoginPage,
     HeroListPage,
-    HeroFormPage
+    HeroFormPage,
+    SignupPage
   ],
   providers: [
     HeroService,

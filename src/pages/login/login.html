@@ -7,15 +7,33 @@
 <ion-header>
 
   <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>Login</ion-title>
+    
+    <ion-title>Log in</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-  <button ion-button (click)="loginWithFacebook()">Login with Facebook</button>
+  <form #loginForm="ngForm">
+    <ion-list>
+      <ion-item>  
+        <ion-label color="primary" floating>Username</ion-label>
+        <ion-input type="text" name="username" [(ngModel)]="username" required></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="primary" floating>Password</ion-label>
+        <ion-input type="password" name="password" [(ngModel)]="password" required></ion-input>
+      </ion-item>
+
+      <ion-item no-lines>
+        <ion-buttons right>
+          <button ion-button (click)="login()" [disabled]="!loginForm.form.valid">Log in</button>
+          <button ion-button clear (click)="signup()">Sign up</button>
+        </ion-buttons>
+      </ion-item>
+    </ion-list>
+  </form>
+  <button ion-button small (click)="loginWithFacebook()">Login with Facebook</button>
 </ion-content>
