@@ -1,39 +1,39 @@
 import { Injectable } from '@angular/core';
 import { Hero } from '../models/hero';
-import { environment } from '../../environments/environment';
+import { environment } from '../environments/environment';
 
-import { Response, Headers, Http } from '@angular/http';
+import { Headers, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 
 import { Observable } from 'rxjs/Observable';
+import { Auth } from './auth';
 
 @Injectable()
 export class HeroService {
     private heroesUrl = environment.apiServer + '/api/heroes';  // URL to web api
-    private headers = new Headers({'Content-Type': 'application/json'});
 
-    constructor(private http: Http) { }
+    constructor(private http: Http, private authService: Auth) { }
 
-    // getHeroes(): Promise<Hero[]> {
-    //     return this.http.get(this.heroesUrl)
-    //             .toPromise()
-    //             .then(response => response.json().data as Hero[])
-    //             .catch(this.handleError);
-    // }
+    getHeaders() {
+        let headers: Headers = this.authService.getAuthHeaders();
+        headers.append('Content-Type', 'application/json');
+
+        return headers;
+    }
 
     getHeroes(): Observable<Hero[]> {
-        return this.http.get(this.heroesUrl)
-            .map((res: Response) => {
-                return res.json().data;
-            })
+        return this.http
+                .get(this.heroesUrl, {headers: this.getHeaders()})
+                .map(heroes => heroes.json().data);
     }
 
     getHero(id: number): Observable<Hero> {
         const url = `${this.heroesUrl}/${id}`;
 
-        return this.http.get(url)
+        return this.http
+                .get(url, {headers: this.getHeaders()})
                 .map(response => {
                     return response.json().data;   
                 });
@@ -42,7 +42,7 @@ export class HeroService {
     update(hero: Hero): Observable<Hero> {
         const url = `${this.heroesUrl}/${hero._id}`;
         return this.http
-            .put(url, JSON.stringify(hero), {headers: this.headers})
+            .put(url, JSON.stringify(hero), {headers: this.getHeaders()})
             .map(response => response.json());
     }
 
@@ -50,12 +50,12 @@ export class HeroService {
         delete hero._id;
         
         return this.http
-            .post(this.heroesUrl, JSON.stringify(hero), {headers: this.headers})
+            .post(this.heroesUrl, JSON.stringify(hero), {headers: this.getHeaders()})
             .map(response => response.json().data);
     }
 
     delete(id: number): Observable<void> {
         const url = `${this.heroesUrl}/${id}`;
-        return this.http.delete(url, {headers: this.headers}).map(()=>{});
+        return this.http.delete(url, {headers: this.getHeaders()}).map(()=>{});
     }
 }

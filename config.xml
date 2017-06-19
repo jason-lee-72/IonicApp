@@ -98,4 +98,5 @@
         <variable name="APP_ID" value="811670902332548" />
         <variable name="APP_NAME" value="JasonsTestApp" />
     </plugin>
+    <plugin name="cordova-sqlite-storage" spec="^2.0.4" />
 </widget>

@@ -4,8 +4,8 @@ import { NavController, NavParams, ItemSliding, AlertController, LoadingControll
 
 import { HeroFormPage } from '../hero-form/hero-form';
 
-import { Hero } from '../../app/models/hero';
-import { HeroService } from '../../app/services/hero.service';
+import { Hero } from '../../models/hero';
+import { HeroService } from '../../providers/hero';
 
 @Component({
   selector: 'hero-list',
@@ -21,25 +21,28 @@ export class HeroListPage implements OnInit {
     public heroService: HeroService,
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController) {
-    
-    this.loading = this.loadingCtrl.create({
-      content: 'Loading ...'
-    });
   }
 
   ngOnInit() {
-    this.loading.present();
+    this.showLoader();
 
     this.heroService.getHeroes().subscribe(
-      heroes => {
-        this.heroes = heroes;
-      },
-      response => {
-        this.showErrorAlert(response, 'Couldn\'t get heroes.');
-        this.heroes = [];
-      },
-      ()=>this.loading.dismiss()
-    );
+        heroes => {
+          this.loading.dismiss();
+          this.heroes = heroes;
+        },
+        response => {
+          this.loading.dismiss();
+          this.showErrorAlert(response, 'Couldn\'t get heroes.');
+          this.heroes = [];
+        });
+  }
+
+  showLoader() {
+    this.loading = this.loadingCtrl.create({
+      content: 'Loading ...'
+    });
+    this.loading.present();
   }
 
   showErrorAlert(response: Response, message: string) {
@@ -108,4 +111,3 @@ export class HeroListPage implements OnInit {
     this.heroes.push(newHero);
   }
 }
-1

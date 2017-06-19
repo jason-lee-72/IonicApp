@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, Loading } from 'ionic-angular';
+import { Auth } from '../../providers/auth';
+
 /**
  * Generated class for the SignupPage page.
  *
@@ -12,13 +14,13 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'signup.html',
 })
 export class SignupPage {
-  firstName: String;
-  lastName: String;
   email: String;
-  username: String;
   password: String;
+  loading: Loading;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public navCtrl: NavController, public navParams: NavParams, 
+    public auth: Auth, public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
   }
 
   ionViewDidLoad() {
@@ -26,6 +28,36 @@ export class SignupPage {
   }
 
   signup() {
+    this.showLoader();
 
+    this.auth.createAccount({
+      email: this.email,
+      password: this.password
+    }).then((result) => {
+      this.loading.dismiss();
+      this.navCtrl.pop();
+    }).catch((error) => {
+      this.loading.dismiss();
+      
+      this.alertCtrl.create({
+        title: 'Error',
+        message: error.json().error,
+        buttons: [
+          {
+            text: 'OK',
+            handler: () => {
+            }
+          }
+        ]
+      }).present();
+    });
+  }
+
+  showLoader(){
+    this.loading = this.loadingCtrl.create({
+      content: 'Authenticating...'
+    });
+ 
+    this.loading.present();
   }
 }

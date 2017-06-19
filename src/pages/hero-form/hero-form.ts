@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController, Loading } from 'ionic-angular';
 import { NgForm } from '@angular/forms';
 
-import { Hero, POWERS } from '../../app/models/hero';
-import { HeroService } from '../../app/services/hero.service';
+import { Hero, POWERS } from '../../models/hero';
+import { HeroService } from '../../providers/hero';
 
 import { GoogleMapComponent } from '../../components/google-map/google-map';
 import { LatLng, Marker, MarkerOptions } from '@ionic-native/google-maps';
@@ -47,6 +47,8 @@ export class HeroFormPage implements OnInit {
       const loading: Loading = this.showLoading('Loading...');
       this.heroService.getHero(this.navParams.get('heroId')).subscribe(
         hero => {
+          loading.dismiss();
+          
           this.hero = hero;
           if (this.hero.coordinates) {
             this.addOrSetMarker();
@@ -56,9 +58,9 @@ export class HeroFormPage implements OnInit {
           }
         },
         response => {
+          loading.dismiss();
           this.showErrorAlert(response, 'Couldn\'t get hero.').then(()=>this.navCtrl.pop());
-        },
-        ()=>loading.dismiss()
+        }
       );
     }
     else

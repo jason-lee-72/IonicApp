@@ -7,7 +7,7 @@ import { HeroListPage } from '../pages/hero-list/hero-list'
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
+import { Auth } from '../providers/auth'
 
 @Component({
   templateUrl: 'app.html'
@@ -17,20 +17,21 @@ export class MyApp {
 
   // make LoginPage the root (or first) page
   rootPage = LoginPage;
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{title: string, component: any, logout?: boolean}>;
 
   constructor(
     public platform: Platform,
     public menu: MenuController,
     public statusBar: StatusBar,
-    public splashScreen: SplashScreen
+    public splashScreen: SplashScreen,
+    public authService: Auth
   ) {
     this.initializeApp();
 
     // set our app's pages
     this.pages = [
       { title: 'Heroes', component: HeroListPage },
-      { title: 'Sign out', component: LoginPage },
+      { title: 'Sign out', component: LoginPage},
     ];
   }
 
@@ -46,6 +47,10 @@ export class MyApp {
   openPage(page) {
     // close the menu when clicking a link from the menu
     this.menu.close();
+
+    if(page.component == LoginPage)
+      this.authService.logout();
+    
     // navigate to the new page if it is not the current page
     this.nav.setRoot(page.component);
   }

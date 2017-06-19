@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Loading, AlertController } from 'ionic-angular';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 
 import { HeroListPage } from '../hero-list/hero-list';
 import { SignupPage } from '../signup/signup';
+import { Auth } from '../../providers/auth';
 /**
  * Generated class for the LoginPage page.
  *
@@ -16,20 +17,54 @@ import { SignupPage } from '../signup/signup';
   templateUrl: 'login.html',
 })
 export class LoginPage {
-  username: String;
+  email: String;
   password: String;
+  loading: Loading;
 
   constructor(
     public navCtrl: NavController, public navParams: NavParams,
-    public facebook: Facebook) {
+    public facebook: Facebook, public authService: Auth,
+    public loadingCtrl: LoadingController, 
+    public alertCtrl: AlertController ) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
+
+    //Check if already authenticated
+    this.authService.checkAuthentication().then((res) => {
+      console.log("Already authorized");
+      this.navCtrl.setRoot(HeroListPage);
+    }, (err) => {
+      console.log("Not already authorized");
+    });
   }
 
   login() {
-    this.navCtrl.setRoot(HeroListPage);
+    let credentials = {
+      email: this.email,
+      password: this.password
+    };
+    this.showLoader();
+    this.authService.login(credentials).then((result) => {
+      console.log(result);
+      this.loading.dismiss().then(()=>{
+        this.navCtrl.setRoot(HeroListPage);
+      });
+      
+    }, (err) => {
+      this.loading.dismiss();
+      
+      this.alertCtrl.create({
+        title: "Login failed",
+        buttons: [
+          {
+            text: "OK",
+            handler: ()=>{}
+          }
+        ]
+      }).present();
+    });
   }
 
   signup() {
@@ -45,5 +80,13 @@ export class LoginPage {
       .catch((facebookLoginResponse: FacebookLoginResponse) => {
         debugger;
       });
+  }
+
+  showLoader() {
+    this.loading = this.loadingCtrl.create({
+      content: 'Authenticating...'
+    });
+
+    this.loading.present();
   }
 }

@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  apiServer: 'https://toh-server.herokuapp.com'
+  apiServer: 'https://ionic-app-backend.herokuapp.com'
 };
