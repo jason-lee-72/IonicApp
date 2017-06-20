@@ -83,8 +83,6 @@ export class HeroFormPage implements OnInit {
       buttons: [
         {
           text: 'OK',
-          handler: () => {
-          }
         }
       ]
     });

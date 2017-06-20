@@ -14,8 +14,6 @@ import { Auth } from '../../providers/auth';
   templateUrl: 'signup.html',
 })
 export class SignupPage {
-  email: String;
-  password: String;
   loading: Loading;
 
   constructor(
@@ -27,12 +25,12 @@ export class SignupPage {
     console.log('ionViewDidLoad SignupPage');
   }
 
-  signup() {
+  signup(email: String, password: String) {
     this.showLoader();
 
     this.auth.createAccount({
-      email: this.email,
-      password: this.password
+      email: email,
+      password: password
     }).then((result) => {
       this.loading.dismiss();
       this.navCtrl.pop();

@@ -17,8 +17,6 @@ import { Auth } from '../../providers/auth';
   templateUrl: 'login.html',
 })
 export class LoginPage {
-  email: String;
-  password: String;
   loading: Loading;
 
   constructor(
@@ -40,13 +38,12 @@ export class LoginPage {
     });
   }
 
-  login() {
-    let credentials = {
-      email: this.email,
-      password: this.password
-    };
+  login(email: String, password: String) {
     this.showLoader();
-    this.authService.login(credentials).then((result) => {
+    this.authService.login({
+      email: email,
+      password: password
+    }).then((result) => {
       console.log(result);
       this.loading.dismiss().then(()=>{
         this.navCtrl.setRoot(HeroListPage);

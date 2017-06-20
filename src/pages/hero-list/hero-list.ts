@@ -52,8 +52,6 @@ export class HeroListPage implements OnInit {
       buttons: [
         {
           text: 'OK',
-          handler: () => {
-          }
         }
       ]
     });
